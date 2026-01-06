@@ -66,8 +66,8 @@ public class MessageWebSocketHandler implements WebSocketHandler {
     }
 
     private Mono<String> handleCreate(WsRequest request) {
-        CreateMessageRequest body = readPayload(request, CreateMessageRequest.class);
         return Mono.fromCallable(() -> {
+                    CreateMessageRequest body = readPayload(request, CreateMessageRequest.class);
                     Message message = messageService.createMessage(body.userId(), body.chatId(), body.payload());
                     return WsResponse.ok("create_message_result", request.requestId(), MessageDto.from(message));
                 })
@@ -77,12 +77,12 @@ public class MessageWebSocketHandler implements WebSocketHandler {
     }
 
     private Mono<String> handleEdit(WsRequest request) {
-        EditMessageRequest body = readPayload(request, EditMessageRequest.class);
-        Integer version = body.version();
-        if (version == null) {
-            return Mono.just(writeSafe(WsResponse.error(request.requestId(), "validation_error", "version is required.")));
-        }
         return Mono.fromCallable(() -> {
+                    EditMessageRequest body = readPayload(request, EditMessageRequest.class);
+                    Integer version = body.version();
+                    if (version == null) {
+                        throw new ValidationException("version is required.");
+                    }
                     Message message = messageService.editMessage(
                             body.messageId(),
                             body.userId(),
@@ -98,10 +98,10 @@ public class MessageWebSocketHandler implements WebSocketHandler {
     }
 
     private Mono<String> handleList(WsRequest request) {
-        ListMessagesRequest body = readPayload(request, ListMessagesRequest.class);
-        int page = body.page() == null ? DEFAULT_PAGE : body.page();
-        int size = body.size() == null ? DEFAULT_SIZE : body.size();
         return Mono.fromCallable(() -> {
+                    ListMessagesRequest body = readPayload(request, ListMessagesRequest.class);
+                    int page = body.page() == null ? DEFAULT_PAGE : body.page();
+                    int size = body.size() == null ? DEFAULT_SIZE : body.size();
                     Page<Message> messages = messageService.listMessages(body.chatId(), body.userId(), page, size);
                     List<MessageDto> items = messages.getContent().stream()
                             .map(MessageDto::from)

@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "e50f62c6-5c95-459e-a6c3-027830619b77",
+		"name": "im app rest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1963954"
+	},
+	"item": [
+		{
+			"name": "Device Verification",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhbGlha3NlaS5pdmFub3Vza2lAZ21haWwuY29tIiwidXNlcklkIjoxMiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY5NDE2NzEsImV4cCI6MTc2Njk0MjU3MX0.TX64wsBFJgFtaFInNtr0cb-wiZIacaM4HyN8LVK9TbG8iTbIY53f7Av_bL1dTiFU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"phone\": \"+971521112244\",\n  \"deviceId\": \"54b72914-abd6-40c2-9468-56b96dc35b89\",\n  \"otp\": \"123456\",\n  \"devicePublicKey\": \"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEa7JhBc5TQRiUGaLt+U+FYvpuMijAUT+hKcZbNn4anrX4UAXeBjY0hLvLphHqCnhDzSo2Az05Es4UyYWQ/r5OVg==\",\n  \"signature\": \"MEUCIQDMgIODyihm6EBW03fcLka+CCDNpWa53TS3DqGZB8LjSAIgUbyGQVHRnOskEY8ChsiMx/YprYrKNov1cjmuEmLTbOQ=\",\n  \"publicKeyAlg\": \"EC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:18080/auth/device/verify",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"auth",
+						"device",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth Start",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"phone\": \"+971521112244\",\n  \"deviceId\": \"54b72914-abd6-40c2-9468-56b96dc35b89\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:18080/auth/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"auth",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Chat",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNGZkNjI5Ni1jNTQzLTQwN2EtOTk3ZC1mNmY5OTBiY2QwN2MiLCJkZXZpY2VfaWQiOiI1NGI3MjkxNC1hYmQ2LTQwYzItOTQ2OC01NmI5NmRjMzViODkiLCJpc3MiOiJpbSIsImV4cCI6MTc2NzcyNzU0NywiaWF0IjoxNzY3NzI2NjQ3fQ.wtAnV812DD8nkjhc2tR_2Y4J9zRSkmnl9MZ50WPw_0Q",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:18080/chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"deviceId\": \"54b72914-abd6-40c2-9468-56b96dc35b89\",\n  \"refreshToken\": \"UD_VBrOpGeRRId9inhhcVL2zRqKhK-kZHsN7HsNgEtQ\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:18080/auth/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "ws_url",
+			"value": "ws://localhost:8080/ws/messages"
+		},
+		{
+			"key": "user_id",
+			"value": "00000000-0000-0000-0000-000000000001"
+		},
+		{
+			"key": "chat_id",
+			"value": "00000000-0000-0000-0000-000000000010"
+		},
+		{
+			"key": "message_id",
+			"value": "00000000-0000-0000-0000-000000000100"
+		},
+		{
+			"key": "version",
+			"value": "0"
+		}
+	]
+}

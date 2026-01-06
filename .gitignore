@@ -19,3 +19,5 @@
 !compose.yaml
 
 !.env.example
+!postman/
+!postman/**
