@@ -1,0 +1,21 @@
+# Ignore All files by default and add necessary ones only
+*
+
+!src/
+!src/**
+
+!.mvn/
+!.mvn/**
+!mvnw
+!mvnw.cmd
+!pom.xml
+
+!README.md
+!PROJECT_STRUCTURE.md
+!.gitignore
+!.gitattributes
+
+!Dockerfile
+!compose.yaml
+
+!.env.example

@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: 'im-app'
+    ports:
+      - '18080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - im-network
+
+  postgres:
+    image: 'postgres:18-alpine'
+    container_name: 'im-postgres'
+    ports:
+      - '15432:5432'
+    volumes:
+      - ./_db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U imuser -d im_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: im_db
+      POSTGRES_PASSWORD: letmein
+      POSTGRES_USER: imuser
+    networks:
+      - im-network
+
+  redis:
+    image: redis:alpine
+    container_name: 'im-redis'
+    ports:
+      - '16379:6379'
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli", "ping" ]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+    volumes:
+      - ./_redis:/data
+    networks:
+      - im-network
+
+networks:
+  im-network:

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: im
+  main:
+    web-application-type: reactive
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:16379}
+
+  flyway:
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    issuer: ${JWT_ISSUER:im}
+    access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:900}
+    refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:2592000}
+    device-challenge-ttl-seconds: ${JWT_DEVICE_CHALLENGE_TTL_SECONDS:300}
+    otp-ttl-seconds: ${JWT_OTP_TTL_SECONDS:300}
+  otp:
+    test-phones: ${OTP_TEST_PHONES:+971521112233,+971521112244}
+    test-code: ${OTP_TEST_CODE:123456}
+  phone:
+    hash-key: ${PHONE_HASH_KEY:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=}
+    enc-key: ${PHONE_ENC_KEY:BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=}

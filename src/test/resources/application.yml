@@ -1,0 +1,17 @@
+security:
+  jwt:
+    secret: test-secret
+    issuer: im-test
+    access-ttl-seconds: 900
+    refresh-ttl-seconds: 2592000
+    device-challenge-ttl-seconds: 300
+    otp-ttl-seconds: 300
+  otp:
+    test-phones:
+      - "+12025550001"
+      - "+12025550002"
+      - "+12025550003"
+    test-code: "000000"
+  phone:
+    hash-key: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+    enc-key: "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB="
