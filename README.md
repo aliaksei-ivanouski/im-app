@@ -25,7 +25,6 @@ Constraints and rules:
 - Support "logout from other devices" during device verification or token refresh.
 - Multi-user chats with membership management and authorization rules.
 - Contact list, presence, and typing indicators.
-- Receiving/reading message acknowledgment.
 - Group chats, invitations, and admin/moderation roles.
 - Media attachments, message receipts, and delivery acknowledgements.
 
