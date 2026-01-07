@@ -46,20 +46,6 @@ docker compose up --build
 HTTP base URL: `http://localhost:18080`  
 WebSocket endpoint: `ws://localhost:18080/ws/messages`
 
-## Build and run native (GraalVM)
-
-Local native build and run:
-```bash
-./mvnw -Pnative -DskipTests native:compile
-./target/im
-```
-
-Docker native build and run (uses `Dockerfile`):
-```bash
-docker build -t im-native .
-docker run --env-file .env -p 8080:8080 im-native
-```
-
 ## Endpoints
 
 ### POST /auth/start
@@ -304,9 +290,9 @@ base64 < signature.bin
 
 Use `.env` or environment variables (see `.env.example`). Common settings:
 ```bash
-export SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:15432/im_db"
-export SPRING_DATASOURCE_USERNAME="imuser"
-export SPRING_DATASOURCE_PASSWORD="letmein"
+export DB_URL="jdbc:postgresql://localhost:15432/im_db"
+export DB_USERNAME="imuser"
+export DB_PASSWORD="letmein"
 export REDIS_HOST="localhost"
 export REDIS_PORT="16379"
 export JWT_SECRET="your-strong-secret"
