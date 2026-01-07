@@ -1,20 +1,33 @@
 # im backend
 
-Reactive IM backend with device-bound authentication, JWT-based API access, and WebSocket messaging. It uses Postgres for persistence and Redis for OTP/device state.
+Reactive IM backend with device-bound authentication, JWT-based API access, and WebSocket messaging. It uses Postgres for persistence and Redis for OTP/device state. The API is organized around device onboarding (OTP + signature), token rotation, chat creation, and WebSocket message exchange.
 
-Required flow before messaging:
-- Generate a device key pair and keep the private key on the client device.
+Overview flow before messaging (exhaustive):
+- Generate a device key pair and keep the private key on the client device (see `Built-in CLI`).
 - Call `POST /auth/start` with `phone` and `deviceId` to receive an OTP and `challenge`.
-- Sign the `challenge` bytes using the device private key and send them to `POST /auth/device/verify` with the OTP and public key metadata.
-- Store the returned access token and refresh token.
+- Sign the `challenge` bytes using the device private key (see `Built-in CLI`).
+- Call `POST /auth/device/verify` with `phone`, `deviceId`, `otp`, `devicePublicKey`, `publicKeyAlg`, and the signature.
+- Store the returned access token and refresh token on the client.
 - Create a chat using `POST /chat` with the access token to obtain a `chatId`.
-- Connect to `ws://.../ws/messages` using the access token and include `chatId` and `userId` in each WebSocket request payload (for this version one user in the system is enough)
+- Connect to `ws://.../ws/messages` using the access token and include `chatId` and `userId` in each WebSocket request payload (for this version one user in the system is enough).
 
-Constraints:
-- Authentication is device-bound and requires OTP + signature proof-of-possession.
-- You must call `/auth/start` and `/auth/device/verify` to obtain an access token.
-- You must create a chat with `POST /chat` before sending messages.
-- WebSocket messaging is only allowed after you have a valid access token and a chatId.
+Constraints and rules:
+- Authentication is device-bound: a device must be verified with OTP and signature proof-of-possession before any API access.
+- `/auth/start` and `/auth/device/verify` are mandatory before calling any authenticated endpoints.
+- Refresh tokens are device-scoped and are rotated; expired, revoked, or mismatched tokens are rejected.
+- A chat must be created with `POST /chat` before any message operations.
+- WebSocket messaging requires a valid access token and a known `chatId` and `userId` in every request.
+- Requests are validated server-side; missing or malformed fields return validation errors.
+
+## Future improvements
+
+- Add session inactivity timeouts to close idle WebSocket connections without forcing client shutdown.
+- Support "logout from other devices" during device verification or token refresh.
+- Multi-user chats with membership management and authorization rules.
+- Contact list, presence, and typing indicators.
+- Receiving/reading message acknowledgment.
+- Group chats, invitations, and admin/moderation roles.
+- Media attachments, message receipts, and delivery acknowledgements.
 
 ## Requirements
 
@@ -53,6 +66,10 @@ docker run --env-file .env -p 8080:8080 im-native
 ### POST /auth/start
 
 Start auth (registers user if missing) and returns OTP + challenge.
+
+OTP behavior:
+- In production, OTP is delivered out-of-band (SMS/email) and is never returned by the API.
+- For local/dev use, set `OTP_TEST_PHONES` and `OTP_TEST_CODE` in `.env`; any phone in `OTP_TEST_PHONES` will accept `OTP_TEST_CODE` as the OTP when calling `/auth/device/verify`.
 
 Request:
 ```bash
