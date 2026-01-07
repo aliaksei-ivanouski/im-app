@@ -2,7 +2,7 @@
 
 Reactive IM backend with device-bound authentication, JWT-based API access, and WebSocket messaging. It uses Postgres for persistence and Redis for OTP/device state. The API is organized around device onboarding (OTP + signature), token rotation, chat creation, and WebSocket message exchange.
 
-Overview flow before messaging (exhaustive):
+Overview flow before messaging:
 - Generate a device key pair and keep the private key on the client device (see `Built-in CLI`).
 - Call `POST /auth/start` with `phone` and `deviceId` to receive an OTP and `challenge`.
 - Sign the `challenge` bytes using the device private key (see `Built-in CLI`).
